@@ -1,1 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots of Lukas</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+        }
+
+        /* Cool animated glowing title */
+        h1 {
+            font-size: 3.5rem;
+            margin: 0 0 1rem 0;
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient-shift 5s ease infinite;
+            background-size: 200% 200%;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Custom file upload button */
+        .upload-container {
+            margin-bottom: 3rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .upload-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Image Gallery Grid */
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 2rem 4rem;
+            box-sizing: border-box;
+        }
+
+        .gallery-item {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            background: #1e293b;
+            aspect-ratio: 1 / 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Screenshots of Lukas</h1>
+        <p>Drop your favorite moments below.</p>
+    </header>
+
+    <div class="upload-container">
+        <label for="image-upload" class="upload-btn">
+            + Add Screenshots
+        </label>
+        <input type="file" id="image-upload" accept="image/*" multiple>
+    </div>
+
+    <div id="gallery">
+        <!-- Images will appear here -->
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const gallery = document.getElementById('gallery');
+
+        imageUpload.addEventListener('change', function(event) {
+            const files = event.target.files;
+
+            // Loop through all selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Ensure it's an image
+                if (!file.type.startsWith('image/')) continue;
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Create the container
+                    const div = document.createElement('div');
+                    div.className = 'gallery-item';
+
+                    // Create the image element
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Screenshot of Lukas';
+
+                    // Append to gallery
+                    div.appendChild(img);
+                    gallery.appendChild(div);
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+            
+            // Reset the input so the same files can be uploaded again if needed
+            imageUpload.value = '';
+        });
+    </script>
+</body>
+</html>
